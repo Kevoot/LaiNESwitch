@@ -1,6 +1,7 @@
 LaiNES - Ported to Nintendo Switch by Kevoot
 ======
-Ported from the original by [AndreaOrru](https://github.com/AndreaOrru/LaiNES)
+Ported from the original by [AndreaOrru](https://github.com/AndreaOrru/LaiNES) 
+by [Kevoot](https://github.com/Kevoot)
 
 Compact, cycle-accurate NES emulator in ~1000 lines of C++.
 
