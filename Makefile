@@ -65,7 +65,7 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
+ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC
 
 CFLAGS	:=	-g -Wall -O3 -fpermissive -ffunction-sections -ffast-math `sdl2-config --cflags` `freetype-config --cflags` \
 			$(ARCH) $(DEFINES)
