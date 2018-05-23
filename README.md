@@ -1,4 +1,4 @@
-LaiNES - Ported to Nintendo Switch by Kevoot
+LaiNES
 ======
 Ported from the original by [AndreaOrru](https://github.com/AndreaOrru/LaiNES) 
 by [Kevoot](https://github.com/Kevoot)
