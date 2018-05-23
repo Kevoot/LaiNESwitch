@@ -104,6 +104,12 @@ void FileMenu::change_dir(string dir)
     struct dirent* dirp;
     DIR* dp = opendir(dir.c_str());
 
+    if(this->depth > 0) {
+        add(new Entry("Back",
+                            [=]{ this->depth = 0; change_dir(".."); },
+                        0));
+    }
+
     while ((dirp = readdir(dp)) != NULL)
     {
         string name = dirp->d_name;
@@ -114,7 +120,7 @@ void FileMenu::change_dir(string dir)
         if (dirp->d_type == DT_DIR)
         {
             add(new Entry(name + "/",
-                          [=]{ change_dir(path); },
+                          [=]{ this->depth++; change_dir(path); },
                           0));
         }
         else if (name.size() > 4 and name.substr(name.size() - 4) == ".nes")
@@ -140,7 +146,7 @@ void FileMenu::change_dir(string dir)
 FileMenu::FileMenu()
 {
     char cwd[512];
-
+    this->depth = 0;
     change_dir(getcwd(cwd, 512));
 }
 

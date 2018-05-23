@@ -270,7 +270,6 @@ template<Scanline s> void scanline_cycle()
 
     if (s == NMI and dot == 1) { status.vBlank = true; if (ctrl.nmi) CPU::set_nmi(); }
     else if (s == POST and dot == 0) { 
-        printf("-------------------Creating new frame from ppu---------------\n"); 
         GUI::new_frame(pixels); 
         }
     else if (s == VISIBLE or s == PRE)

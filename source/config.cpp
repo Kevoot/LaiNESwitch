@@ -80,16 +80,18 @@ const char* get_config_path(char * buf, int buflen)
 void load_settings()
 {
     /* Files */
-    // char path[CONFIG_PATH_MAX];
-    // ini.LoadFile(get_config_path(path, sizeof(path)));
+    char path[CONFIG_PATH_MAX];
+    ini.LoadFile(get_config_path(path, sizeof(path)));
 
     /* Screen settings */
+    // TODO: Once OpenGL is available, use this instead
     // int screen_size = atoi(ini.GetValue("screen", "size", "1"));
-    int screen_size = 2;
-    if (screen_size < 1 || screen_size > 4)
-         screen_size = 1;
+    // if (screen_size < 1 || screen_size > 3)
+    //     int screen_size = 2;
 
-    set_size(screen_size);
+    //set_size(screen_size);
+
+    set_size(1);
 
     /* Control settings */
         printf("Setting up joycons...");

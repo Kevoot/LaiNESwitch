@@ -66,6 +66,7 @@ class FileMenu : public Menu
     void change_dir(std::string dir);
 
   public:
+    int depth;
     FileMenu();
 };
 

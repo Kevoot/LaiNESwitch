@@ -9,7 +9,7 @@ namespace GUI {
 
 const int TEXT_CENTER  = -1;
 const int TEXT_RIGHT   = -2;
-const unsigned FONT_SZ = 15;
+const unsigned FONT_SZ = 13;
 
 void init();
 void toggle_pause();

@@ -6,6 +6,7 @@
 #include "joypad.hpp"
 #include "ppu.hpp"
 #include "cpu.hpp"
+#include <exception>
 
 namespace CPU {
 
@@ -19,15 +20,18 @@ bool nmi, irq;
 
 // Remaining clocks to end frame:
 const int TOTAL_CYCLES = 29781;
-// const int TOTAL_CYCLES = 4096;
-// const int TOTAL_CYCLES = 3;
+// const int TOTAL_CYCLES = 9927;
 
 int remainingCycles = 0;
 inline int elapsed() { return TOTAL_CYCLES - remainingCycles; }
 
 /* Cycle emulation */
 #define T   tick()
-inline void tick() { PPU::step(); PPU::step(); PPU::step(); remainingCycles--; }
+inline void tick() { 
+    PPU::step();
+    PPU::step();
+    PPU::step(); 
+    remainingCycles--; }
 
 /* Flags updating */
 inline void upd_cv(u8 x, u8 y, s16 r) { P[C] = (r>0xFF); P[V] = ~(x^y) & (x^r) & 0x80; }
@@ -267,19 +271,17 @@ void power()
 /* Run the CPU for roughly a frame */
 void run_frame()
 {
+    // printf("CPU now running frame\n");
     remainingCycles += TOTAL_CYCLES;
-    u64 cyclesRun = 0;
     while(remainingCycles > 0)
     {
         if (nmi) INT<NMI>();
         else if (irq and !P[I]) INT<IRQ>();
         exec();
-        if(remainingCycles <= 0) break;
-        // printf("Remaining Cycles: %d  ", remainingCycles);
-        // printf("Total Cycles Ran: %d\n", cyclesRun++);
     }
     // printf("APU now running frame\n");
     APU::run_frame(elapsed());
+    // printf("APU completed frame\n");
 }
 
 
