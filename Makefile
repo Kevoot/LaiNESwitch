@@ -57,7 +57,7 @@ ROMFS		:=	game
 
 APP_TITLE	:= LaiNes
 APP_AUTHOR	:= Kevoot
-APP_VERSION	:= 1.2
+APP_VERSION	:= 1.0
 APP_TITLEID	:= 1248
 
 ICON		:= icon.jpg
@@ -65,20 +65,19 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIC
+ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=hard -fpic -pie
 
-CFLAGS	:=	-g -Wall -O3 -ffunction-sections -fpermissive  #-ffast-math -funsafe-math-optimizations 
-CFLAGS  +=	`sdl2-config --cflags` `freetype-config --cflags` 
-CFLAGS  +=	$(ARCH) $(DEFINES)
+CFLAGS	:=	-g -Wall -O3 -ffunction-sections -fpermissive -ffast-math -funsafe-math-optimizations `sdl2-config --cflags` `freetype-config --cflags` \
+			$(ARCH) $(DEFINES)
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++11 #-shared -static
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++17 -shared -static
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS := -lSDL2_mixer -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs`
+LIBS := -lSDL2_mixer -lmodplug -lmpg123 -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs`
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
