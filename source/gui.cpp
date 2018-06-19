@@ -1,7 +1,12 @@
 #include <csignal>
+#include <dirent.h>
+#include <time.h>
+
+#include <switch.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL.h>
+
 #include "Sound_Queue.h"
 #include "apu.hpp"
 #include "cartridge.hpp"
@@ -9,8 +14,6 @@
 #include "menu.hpp"
 #include "gui.hpp"
 #include "config.hpp"
-#include <dirent.h>
-#include <switch.h>
 
 namespace GUI {
 
@@ -42,6 +45,7 @@ FileMenu* fileMenu;
 bool pause = true;
 int currentRenderQuality = 0;
 bool exitFlag = false;
+Uint32 nextTime;
 
 /*void set_render_quality(int quality) {
     switch(quality) {
@@ -106,7 +110,7 @@ void updateVideoMenu() {
 void init()
 {
     // Initialize graphics system:
-    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK | SDL_INIT_TIMER) < 0) {
         printf("Failed to init video, audio, and joystick\n");
         return;
     }
@@ -142,7 +146,7 @@ void init()
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
-    SDL_RenderSetLogicalSize(renderer, WIDTH, HEIGHT);
+    // SDL_RenderSetLogicalSize(renderer, WIDTH, HEIGHT);
 
     gameTexture = SDL_CreateTexture(renderer,
                                     SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
@@ -279,7 +283,7 @@ void new_samples(const blip_sample_t* samples, size_t count)
 /* Render the screen */
 void render()
 {
-    SDL_RenderClear(renderer);
+    // SDL_RenderClear(renderer);
 
     // Draw the NES screen:
     if (Cartridge::loaded())
