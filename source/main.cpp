@@ -1,8 +1,6 @@
 #include "gui.hpp"
 #include "config.hpp"
 #include <switch.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include <sys/errno.h>
 #include <unistd.h>
 
