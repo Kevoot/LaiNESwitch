@@ -96,7 +96,7 @@ template<u8& r, Mode m> void cmp() { G; upd_nz(r - p); P[C] = (r >= p); }  // CM
 /* Arithmetic and bitwise */
 template<Mode m> void ADC() { G       ; s16 r = A + p + P[C]; upd_cv(A, p, r); upd_nz(A = r); }
 template<Mode m> void SBC() { G ^ 0xFF; s16 r = A + p + P[C]; upd_cv(A, p, r); upd_nz(A = r); }
-template<Mode m> void BIT() { G; P[Z] = !(A & p); P[N] = p & 0x80; P[V] = p & 0x40; }
+template<Mode m> void nes_BIT() { G; P[Z] = !(A & p); P[N] = p & 0x80; P[V] = p & 0x40; }
 template<Mode m> void AND() { G; upd_nz(A &= p); }
 template<Mode m> void EOR() { G; upd_nz(A ^= p); }
 template<Mode m> void ORA() { G; upd_nz(A |= p); }
@@ -172,10 +172,10 @@ void exec()
         case 0x16: return ASL<zpx>()  ;  case 0x18: return flag<C,0>() ;
         case 0x19: return ORA<aby>()  ;  case 0x1D: return ORA<abx>()  ;
         case 0x1E: return ASL<_abx>() ;  case 0x20: return JSR()       ;
-        case 0x21: return AND<izx>()  ;  case 0x24: return BIT<zp>()   ;
+        case 0x21: return AND<izx>()  ;  case 0x24: return nes_BIT<zp>()   ;
         case 0x25: return AND<zp>()   ;  case 0x26: return ROL<zp>()   ;
         case 0x28: return PLP()       ;  case 0x29: return AND<imm>()  ;
-        case 0x2A: return ROL_A()     ;  case 0x2C: return BIT<abs>()  ;
+        case 0x2A: return ROL_A()     ;  case 0x2C: return nes_BIT<abs>()  ;
         case 0x2D: return AND<abs>()  ;  case 0x2E: return ROL<abs>()  ;
         case 0x30: return br<N,1>()   ;  case 0x31: return AND<izy>()  ;
         case 0x35: return AND<zpx>()  ;  case 0x36: return ROL<zpx>()  ;
@@ -282,6 +282,7 @@ void run_frame()
     // printf("APU now running frame\n");
     APU::run_frame(elapsed());
     // printf("APU completed frame\n");
+
 }
 
 

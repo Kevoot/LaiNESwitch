@@ -3,13 +3,14 @@
 #include <string>
 #include <Nes_Apu.h>
 #include "common.hpp"
+#include <switch.h>
 
 namespace GUI {
-
 
 const int TEXT_CENTER  = -1;
 const int TEXT_RIGHT   = -2;
 const unsigned FONT_SZ = 13;
+extern Mutex pixelMutex;
 
 void init();
 void toggle_pause();

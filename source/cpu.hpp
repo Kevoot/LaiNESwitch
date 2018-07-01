@@ -1,9 +1,9 @@
 #pragma once
 #include "common.hpp"
 #include <Nes_Apu.h>
+#include <switch.h>
 
 namespace CPU {
-
 
 enum IntType { NMI, RESET, IRQ, BRK };  // Interrupt type.
 typedef u16 (*Mode)(void);              // Addressing mode.
