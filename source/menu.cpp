@@ -85,7 +85,7 @@ void Menu::update(int joy)
         cursor--;
 
 	if (cursor < 0)
-		cursor = entries.size();
+		cursor = entries.size()-1;
 	else if (cursor >= entries.size())
 		cursor = 0;
 
