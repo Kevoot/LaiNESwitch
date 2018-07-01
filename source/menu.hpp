@@ -52,6 +52,8 @@ class ControlEntry : public Entry
 class Menu
 {
     std::vector<Entry*> entries;
+	int entryDisplayLimit = (HEIGHT / FONT_SZ);
+	int displayOffset = 0;
     int cursor = 0;
 
   public:

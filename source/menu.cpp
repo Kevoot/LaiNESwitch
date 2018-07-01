@@ -63,7 +63,7 @@ void Menu::add(Entry* entry)
 {
     if (entries.empty())
         entry->select();
-    entry->setY(entries.size() * FONT_SZ);
+    
     entries.push_back(entry);
 }
 
@@ -79,10 +79,17 @@ void Menu::update(int joy)
 {
     int oldCursor = cursor;
 
-    if (((joy == JOY_DOWN) or (joy == JOY_LSTICK_DOWN)) and cursor < entries.size() - 1)
+    if (((joy == JOY_DOWN) or (joy == JOY_LSTICK_DOWN)) and cursor < entries.size())
         cursor++;
-    else if (((joy == JOY_UP) or (joy == JOY_LSTICK_UP)) and cursor > 0)
+    else if (((joy == JOY_UP) or (joy == JOY_LSTICK_UP)) and cursor >= 0)
         cursor--;
+
+	if (cursor < 0)
+		cursor = entries.size();
+	else if (cursor >= entries.size())
+		cursor = 0;
+
+	displayOffset = cursor / entryDisplayLimit;
 
     entries[oldCursor]->unselect();
     entries[cursor]->select();
@@ -93,8 +100,14 @@ void Menu::update(int joy)
 
 void Menu::render()
 {
-    for (auto entry : entries)
-        entry->render();
+   /* for (auto entry : entries)
+        entry->render();*/
+	for (int it = 0; it < entryDisplayLimit; it++) {
+		int relPos = it;
+		relPos += displayOffset * entryDisplayLimit;
+		entries[relPos]->setY(it * FONT_SZ);
+		entries[relPos]->render();
+	}
 }
 
 void FileMenu::change_dir(string dir)
