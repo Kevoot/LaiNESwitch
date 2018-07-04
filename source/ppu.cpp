@@ -351,5 +351,74 @@ void reset()
     memset(oamMem, 0x00, sizeof(oamMem));
 }
 
+PpuSave * getPpuSave() {
+    PpuSave * save = new PpuSave();
+
+    memcpy(save->ciRam, ciRam, 0x800);
+    memcpy(save->cgRam, cgRam, 0x20);
+    memcpy(save->oamMem, oamMem, 0x100);
+    memcpy(save->oam, oam, 8);
+    memcpy(save->secOam, secOam, 8);
+    memcpy(save->pixels, pixels, (256 * 240));
+
+    save->vAddr = vAddr;
+    save->tAddr = tAddr;
+    save->fX = fX;
+    save->oamAddr = oamAddr;
+
+    save->mirroring = mirroring;
+    save->ctrl = ctrl;
+    save->mask = mask;
+    save->status = status;
+
+    save->nt = nt;
+    save->at = at;
+    save->bgL = bgL;
+    save->bgH = bgH;
+    save->atShiftL = atShiftL;
+    save->atShiftH = atShiftH;
+    save->bgShiftL = bgShiftL;
+    save->bgShiftH = bgShiftH;
+    save->atLatchL = atLatchL;
+    save->atLatchH = atLatchH;
+
+    save->scanline = scanline;
+    save->dot = dot;
+    save->frameOdd = frameOdd;
+}
+
+void restorePpuState(PpuSave * save) {
+    memcpy(ciRam, save->ciRam, 0x800);
+    memcpy(cgRam, save->cgRam, 0x20);
+    memcpy(oamMem, save->oamMem, 0x100);
+    memcpy(oam, save->oam, 8);
+    memcpy(secOam, save->secOam, 8);
+    memcpy(pixels, save->pixels, (256 * 240));
+
+    vAddr = save->vAddr;
+    tAddr = save->tAddr;
+    fX = save->fX;
+    oamAddr = save->oamAddr;
+
+    mirroring = save->mirroring;
+    ctrl = save->ctrl;
+    mask = save->mask;
+    status = save->status;
+
+    nt = save->nt;
+    at = save->at;
+    bgL = save->bgL;
+    bgH = save->bgH;
+    atShiftL = save->atShiftL;
+    atShiftH = save->atShiftH;
+    bgShiftL = save->bgShiftL;
+    bgShiftH = save->bgShiftH;
+    atLatchL = save->atLatchL;
+    atLatchH = save->atLatchH;
+
+    scanline = save->scanline;
+    dot = save->dot;
+    frameOdd = save->frameOdd;
+}
 
 }

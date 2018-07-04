@@ -285,5 +285,36 @@ void run_frame()
 
 }
 
+CpuSave * getCpuState() {
+    CpuSave * save = new CpuSave();
+
+    memcpy(save->ram, ram, 0x400);
+    save->A = A; 
+    save->X = X;
+    save->Y = Y;
+    save->S = S;
+    save->PC = PC;
+    save->P = P;
+    save->nmi = nmi;
+    save->irq = irq;
+    save->remainingCycles = remainingCycles;
+
+    return save;
+}
+
+void restoreCpuState(CpuSave * save) {
+    memcpy(ram, save->ram, 0x400);
+    A = save->A; 
+    X = save->X;
+    Y= save->Y;
+    S = save->S;
+    PC = save->PC;
+    P = save->P;
+    nmi = save->nmi;
+    irq = save->irq;
+    remainingCycles = save->remainingCycles;
+
+    return save;
+}
 
 }

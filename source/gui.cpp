@@ -37,9 +37,13 @@ Menu *keyboardMenu[2];
 Menu *joystickMenu[2];
 FileMenu *fileMenu;
 
+SaveState::SaveState * state;
 bool pause = true;
 int currentRenderQuality = 0;
 bool exitFlag = false;
+bool saveStateFlag = false;
+bool loadStateFlag = false;
+bool romLoaded = false;
 Mutex pixelMutex;
 
 /*void set_render_quality(int quality) {
@@ -171,6 +175,12 @@ void init()
     // Menus:
     mainMenu = new Menu;
     mainMenu->add(new Entry("Load ROM", [] { menu = fileMenu; }));
+    mainMenu->add(new Entry("Save State (In Progress)", [] { if(romLoaded) saveStateFlag = true; }));
+    mainMenu->add(new Entry("Load State (In Progress)", [] { 
+        if(romLoaded && (state)) {
+            loadStateFlag = true;
+        }
+    }));
     mainMenu->add(new Entry("Settings", [] { menu = settingsMenu; }));
     mainMenu->add(new Entry("Exit", [] { exitFlag = true; }));
 
@@ -302,6 +312,7 @@ void render()
 void toggle_pause()
 {
     printf("Toggling pause\n");
+    if(!romLoaded) romLoaded = true;
     pause = !pause;
     menu = mainMenu;
 
@@ -394,6 +405,14 @@ void run()
             render();
             threadWaitForExit(&cpuThread);
             threadClose(&cpuThread);
+            if(saveStateFlag) {
+                state = new SaveState::SaveState();
+                saveStateFlag = false;
+            }
+            if(loadStateFlag) {
+                state->RestoreState();
+                loadStateFlag = false;
+            }
         }
         else render();
 

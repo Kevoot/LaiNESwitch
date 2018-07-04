@@ -84,10 +84,38 @@ union Addr
     unsigned r : 15;
 };
 
+class PpuSave
+{
+  public:
+    u8 * ciRam;
+    u8 * cgRam;
+    u8 * oamMem;
+    Sprite * oam;
+    Sprite * secOam;
+    u32 * pixels;
+
+    Addr vAddr, tAddr;
+    u8 fX, oamAddr;
+
+    Mirroring mirroring;
+    Ctrl ctrl;
+    Mask mask;
+    Status status;
+
+    u8 nt, at, bgL, bgH, atShiftL, atShiftH;
+    u16 bgShiftL, bgShiftH;
+    bool atLatchL, atLatchH;
+
+    int scanline, dot;
+    bool frameOdd;
+};
+
 template <bool write> u8 access(u16 index, u8 v = 0);
 void set_mirroring(Mirroring mode);
 void step();
 void reset();
 
+PpuSave * getPpuSave();
+void restorePpuState(PpuSave * save);
 
 }
