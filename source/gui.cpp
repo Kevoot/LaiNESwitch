@@ -15,11 +15,8 @@
 namespace GUI
 {
 
-// Screen size:
 const unsigned WIDTH = 256;
-// const unsigned WIDTH = 128;
 const unsigned HEIGHT = 240;
-// const unsigned HEIGHT = 120;
 
 // SDL structures:
 SDL_Window *window;

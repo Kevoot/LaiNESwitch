@@ -6,18 +6,18 @@
 
 int main(int argc, char *argv[])
 {
-    // gfxInitDefault();
-    // consoleInit(NULL);
+    /*gfxInitDefault();
+    consoleInit(NULL);
     // Initialise sockets
-    // socketInitializeDefault();
+    socketInitializeDefault();
 
-    // nxlinkStdio();
-    // printf("nxlink started\n");
+    nxlinkStdio();
+    printf("nxlink started\n");
 
-    // gfxFlushBuffers();
-    // gfxSwapBuffers();
-    // gfxWaitForVsync();
-    // gfxExit();
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gfxWaitForVsync();
+    gfxExit();*/
 
     GUI::load_settings();
     GUI::init();

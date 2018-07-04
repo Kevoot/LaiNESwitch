@@ -9,7 +9,6 @@ namespace GUI {
 
 using namespace std;
 
-
 Entry::Entry(string label, function<void()> callback, int x, int y) : callback(callback), x(x), y(y)
 {
     setLabel(label);
@@ -63,7 +62,7 @@ void Menu::add(Entry* entry)
 {
     if (entries.empty())
         entry->select();
-    entry->setY(entries.size() * FONT_SZ);
+    // entry->setY(entries.size() * FONT_SZ);
     entries.push_back(entry);
 }
 
@@ -79,10 +78,17 @@ void Menu::update(int joy)
 {
     int oldCursor = cursor;
 
-    if (((joy == JOY_DOWN) or (joy == JOY_LSTICK_DOWN)) and cursor < entries.size() - 1)
+    if (((joy == JOY_DOWN) or (joy == JOY_LSTICK_DOWN)) and cursor < entries.size())
         cursor++;
-    else if (((joy == JOY_UP) or (joy == JOY_LSTICK_UP)) and cursor > 0)
+    else if (((joy == JOY_UP) or (joy == JOY_LSTICK_UP)) and cursor >= 0)
         cursor--;
+
+    if (cursor < 0)
+		cursor = entries.size() - 1;
+	else if (cursor >= entries.size())
+		cursor = 0;
+
+	displayOffset = cursor / ENTRY_DISP_LIMIT;
 
     entries[oldCursor]->unselect();
     entries[cursor]->select();
@@ -93,8 +99,12 @@ void Menu::update(int joy)
 
 void Menu::render()
 {
-    for (auto entry : entries)
-        entry->render();
+    for (size_t i = 0; i < entries.size() - 1; i++) {
+        int relPos = i;
+        relPos += displayOffset * ENTRY_DISP_LIMIT;
+        entries[i]->setY(relPos * FONT_SZ);
+        entries[i]->render();
+    }
 }
 
 void FileMenu::change_dir(string dir)

@@ -7,6 +7,8 @@
 
 namespace GUI {
 
+const unsigned ENTRY_DISP_LIMIT = (HEIGHT / FONT_SZ);
+
 class Entry
 {
     int x, y;
@@ -52,6 +54,7 @@ class ControlEntry : public Entry
 class Menu
 {
     std::vector<Entry*> entries;
+	  int displayOffset = 0;
     int cursor = 0;
 
   public:
