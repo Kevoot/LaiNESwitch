@@ -57,7 +57,7 @@ ROMFS		:=	game
 
 APP_TITLE	:= LaiNes
 APP_AUTHOR	:= Kevoot
-APP_VERSION	:= 1.2
+APP_VERSION	:= 1.3
 APP_TITLEID	:= 1248
 
 ICON		:= icon.jpg
