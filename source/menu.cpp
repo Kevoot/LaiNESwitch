@@ -62,7 +62,7 @@ void Menu::add(Entry* entry)
 {
     if (entries.empty())
         entry->select();
-    // entry->setY(entries.size() * FONT_SZ);
+
     entries.push_back(entry);
 }
 
@@ -99,12 +99,14 @@ void Menu::update(int joy)
 
 void Menu::render()
 {
-    for (size_t i = 0; i < entries.size() - 1; i++) {
-        int relPos = i;
-        relPos += displayOffset * ENTRY_DISP_LIMIT;
-        entries[i]->setY(relPos * FONT_SZ);
-        entries[i]->render();
-    }
+    for (int it = 0; it < ENTRY_DISP_LIMIT; it++) {
+		int relPos = it;
+		relPos += displayOffset * ENTRY_DISP_LIMIT;
+        if(relPos < entries.size()) {
+		    entries[relPos]->setY(it * FONT_SZ);
+		    entries[relPos]->render();
+        }
+	}
 }
 
 void FileMenu::change_dir(string dir)
