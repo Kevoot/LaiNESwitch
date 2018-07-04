@@ -10,7 +10,8 @@ namespace GUI {
 const int TEXT_CENTER  = -1;
 const int TEXT_RIGHT   = -2;
 const unsigned FONT_SZ = 13;
-extern Mutex pixelMutex;
+extern const unsigned WIDTH;
+extern const unsigned HEIGHT;
 
 void init();
 void toggle_pause();
