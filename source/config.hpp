@@ -1,14 +1,8 @@
 #pragma once
-#include <cerrno>
 #include <sys/stat.h>
 #include <SDL2/SDL.h>
 
-#define CONFIG_DIR_DEFAULT_MODE      S_IRWXU | S_IRGRP |  S_IXGRP | S_IROTH | S_IXOTH
-#define USE_CONFIG_DIR true
-#define CONFIG_DIR_NAME "LaiNES" 
-#define CONFIG_FALLBACK ".laines-settings"
-/* PATH_MAX is a portability nightmare. */
-#define CONFIG_PATH_MAX 1024 
+#define CONFIG_FALLBACK ".settings"
 
 #define JOY_A     0
 #define JOY_B     1
@@ -46,13 +40,9 @@ extern SDL_Scancode KEY_DOWN  [];
 extern SDL_Scancode KEY_LEFT  [];
 extern SDL_Scancode KEY_RIGHT [];
 extern int BTN_UP     [];
-extern int BTN_DUP    [];
 extern int BTN_DOWN   [];
-extern int BTN_DDOWN  [];
 extern int BTN_LEFT   [];
-extern int BTN_DLEFT  [];
 extern int BTN_RIGHT  [];
-extern int BTN_DRIGHT [];
 extern int BTN_A      [];
 extern int BTN_B      [];
 extern int BTN_SELECT [];

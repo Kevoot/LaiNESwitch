@@ -12,6 +12,10 @@ const int TEXT_RIGHT   = -2;
 const unsigned FONT_SZ = 13;
 extern const unsigned WIDTH;
 extern const unsigned HEIGHT;
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
+extern SDL_Texture *gameTexture;
+extern SDL_Texture *background;
 
 void init();
 void toggle_pause();

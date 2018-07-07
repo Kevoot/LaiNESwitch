@@ -120,15 +120,17 @@ void init()
         return;
     }
 
-    // for (int i = 0; i < SDL_NumJoysticks(); i++)
-    printf("Attempting to open joystick 0...");
-    joystick[0] = SDL_JoystickOpen(0);
-    // joystick[1] = SDL_JoystickOpen(1);
-    if (joystick[0] == nullptr)
-    {
-        printf("Failure!\n");
-        return;
+    printf("Attempting to open joysticks...");
+    for (int i = 0; i < 2; i++) {
+        joystick[i] = SDL_JoystickOpen(i);
+        if (joystick[i] == nullptr)
+        {
+            printf("Joystick %d Failure!\n", i);
+            return;
+        }
     }
+
+
     printf("Done.\n");
 
     printf("Initializing APU...");
@@ -138,7 +140,7 @@ void init()
     soundQueue = new Sound_Queue;
     soundQueue->init(96000);
 
-    // Initialize graphics structures:
+    printf("Initializing graphics structures...");
     window = SDL_CreateWindow(NULL,
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               WIDTH * last_window_size, HEIGHT * last_window_size, SDL_WINDOW_FULLSCREEN);
@@ -152,12 +154,18 @@ void init()
                                     WIDTH, HEIGHT);
 
     font = TTF_OpenFont("res/font.ttf", FONT_SZ);
+    if(!font) {
+        printf("Failed to open res/font.ttf!");
+        exit(1);
+    }
+    printf("...done");
 
     // keys = SDL_GetKeyboardState(0);
 
-    // Initial background:
+    printf("Setting background...");
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
+        printf("Failed to initialize PNG!");
         exit(1);
     }
 
@@ -167,6 +175,11 @@ void init()
 
     SDL_SetTextureColorMod(background, 60, 60, 60);
     SDL_FreeSurface(backSurface);
+
+    if(!background) {
+        printf("Failed to create background!");
+        exit(1);
+    }
 
     // Menus:
     mainMenu = new Menu;
@@ -178,31 +191,25 @@ void init()
     settingsMenu->add(new Entry("<", [] { menu = mainMenu; }));
     // TODO: Add this back and enable substituting the render quality during runtime
     // settingsMenu->add(new Entry("Video",        []{ menu = videoMenu; }));
-    // settingsMenu->add(new Entry("Controller 1", []{ menu = joystickMenu[0]; }));
+    settingsMenu->add(new Entry("Controller 1", []{ menu = joystickMenu[0]; }));
 
     // updateVideoMenu();
 
-    // TODO: Add multiplayer support
-    // settingsMenu->add(new Entry("Controller 2", []{ menu = joystickMenu[1]; }));
+    settingsMenu->add(new Entry("Controller 2", []{ menu = joystickMenu[1]; }));
     settingsMenu->add(new Entry("Save Settings", [] { save_settings(); menu = mainMenu; }));
 
-    // for (int i = 0; i < 2; i++)
-    // {
-    // if (joystick[i] != nullptr)
-    // {
-    int i = 0;
-    joystickMenu[i] = new Menu;
-    joystickMenu[i]->add(new Entry("<", [] { menu = settingsMenu; }));
-    joystickMenu[i]->add(new ControlEntry("Up", &BTN_UP[i]));
-    joystickMenu[i]->add(new ControlEntry("Down", &BTN_DOWN[i]));
-    joystickMenu[i]->add(new ControlEntry("Left", &BTN_LEFT[i]));
-    joystickMenu[i]->add(new ControlEntry("Right", &BTN_RIGHT[i]));
-    joystickMenu[i]->add(new ControlEntry("A", &BTN_A[i]));
-    joystickMenu[i]->add(new ControlEntry("B", &BTN_B[i]));
-    joystickMenu[i]->add(new ControlEntry("Start", &BTN_START[i]));
-    joystickMenu[i]->add(new ControlEntry("Select", &BTN_SELECT[i]));
-    // }
-    // }
+    for (int i = 0; i < 2; i++) {
+        joystickMenu[i] = new Menu;
+        joystickMenu[i]->add(new Entry("<", [] { menu = settingsMenu; }));
+        joystickMenu[i]->add(new ControlEntry("Up", &BTN_UP[i]));
+        joystickMenu[i]->add(new ControlEntry("Down", &BTN_DOWN[i]));
+        joystickMenu[i]->add(new ControlEntry("Left", &BTN_LEFT[i]));
+        joystickMenu[i]->add(new ControlEntry("Right", &BTN_RIGHT[i]));
+        joystickMenu[i]->add(new ControlEntry("A", &BTN_A[i]));
+        joystickMenu[i]->add(new ControlEntry("B", &BTN_B[i]));
+        joystickMenu[i]->add(new ControlEntry("Start", &BTN_START[i]));
+        joystickMenu[i]->add(new ControlEntry("Select", &BTN_SELECT[i]));
+    }
 
     fileMenu = new FileMenu;
 
@@ -240,32 +247,22 @@ SDL_Texture *gen_text(std::string text, SDL_Color color)
 /* Get the joypad state from SDL */
 u8 get_joypad_state(int n)
 {
-    if (n == 1)
-        return 0;
-
     const int DEAD_ZONE = 8000;
 
     u8 j = 0;
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_A[n])) << 0;      // A.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_B[n])) << 1;      // B.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_SELECT[n])) << 2; // Select.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_START[n])) << 3;  // Start.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_A[n]))      << 0;  // A.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_B[n]))      << 1;  // B.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_SELECT[n])) << 2;  // Select.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_START[n]))  << 3;  // Start.
 
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DUP[n])) << 4; // Up dpad
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_UP[n])) << 4;  // Up joy
-    j |= (SDL_JoystickGetAxis(joystick[n], 1) < -DEAD_ZONE) << 4;
-
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DDOWN[n])) << 5; // Down dpad
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DOWN[n])) << 5;  // Down joy
-    j |= (SDL_JoystickGetAxis(joystick[n], 1) > DEAD_ZONE) << 5;
-
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DLEFT[n])) << 6; // Left dpad
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_LEFT[n])) << 6;  // Left joy
-    j |= (SDL_JoystickGetAxis(joystick[n], 0) < -DEAD_ZONE) << 6;
-
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DRIGHT[n])) << 7; // Right dpad
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_RIGHT[n])) << 7;  // Right joy
-    j |= (SDL_JoystickGetAxis(joystick[n], 0) > DEAD_ZONE) << 7;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_UP[n]))     << 4;  // Up.
+    j |= (SDL_JoystickGetAxis(joystick[n], 1) < -DEAD_ZONE)  << 4;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_DOWN[n]))   << 5;  // Down.
+    j |= (SDL_JoystickGetAxis(joystick[n], 1) >  DEAD_ZONE)  << 5;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_LEFT[n]))   << 6;  // Left.
+    j |= (SDL_JoystickGetAxis(joystick[n], 0) < -DEAD_ZONE)  << 6;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_RIGHT[n]))  << 7;  // Right.
+    j |= (SDL_JoystickGetAxis(joystick[n], 0) >  DEAD_ZONE)  << 7;
     return j;
 }
 

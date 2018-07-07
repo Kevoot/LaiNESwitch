@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    /*gfxInitDefault();
+    gfxInitDefault();
     consoleInit(NULL);
     // Initialise sockets
     socketInitializeDefault();
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     gfxFlushBuffers();
     gfxSwapBuffers();
     gfxWaitForVsync();
-    gfxExit();*/
+    gfxExit();
 
     GUI::load_settings();
     GUI::init();

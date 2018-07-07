@@ -48,7 +48,6 @@ DATA		:=	source/scripts
 INCLUDES	:=	source \
 				source/boost \
 				source/mappers \
-				simpleini \
 				$(INC_OBJS) \
 				$(EXT_LIBS)
 
@@ -57,7 +56,7 @@ ROMFS		:=	game
 
 APP_TITLE	:= LaiNes
 APP_AUTHOR	:= Kevoot
-APP_VERSION	:= 1.3
+APP_VERSION	:= 1.4
 APP_TITLEID	:= 1248
 
 ICON		:= icon.jpg
