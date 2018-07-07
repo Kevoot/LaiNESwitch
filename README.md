@@ -109,7 +109,9 @@ void exec()
 * The quality of the audio emulation on Linux is very poor. Typing `export SDL_AUDIODRIVER=ALSA` before running the emulator has been reported to improve it.
 
 ## Contributors
-* [Jeff Katz](https://github.com/kraln) - Mapper 002 & 003, configuration.
+* [AndreaOrru](https://github.com/AndreaOrru/LaiNES) - Original Author
+* [Jeff Katz](https://github.com/kraln) - Mapper 002, 003, initial 007, and configuration.
+* [Kevoot](https://github.com/Kevoot) - Switch port, 007 integration, threading
 
 ## References and credits
 - Original by [AndreaOrru](https://github.com/AndreaOrru/LaiNES)
