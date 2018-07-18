@@ -21,7 +21,7 @@ void Mapper2::apply()
     set_mirroring(vertical_mirroring?PPU::VERTICAL:PPU::HORIZONTAL);
 }
 
-u8 Mapper2::write(u16 addr, u8 v)
+uint8_t Mapper2::write(uint16_t addr, uint8_t v)
 {
     /* check for bus contingency? (addr & 0x8000 == v?) nah */
 
@@ -34,7 +34,7 @@ u8 Mapper2::write(u16 addr, u8 v)
     return v;
 }
 
-u8 Mapper2::chr_write(u16 addr, u8 v)
+uint8_t Mapper2::chr_write(uint16_t addr, uint8_t v)
 {
     return chr[addr] = v;
 }

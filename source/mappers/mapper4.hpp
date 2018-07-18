@@ -4,18 +4,18 @@
 
 class Mapper4 : public Mapper
 {
-    u8 reg8000;
-    u8 regs[8];
+    uint8_t reg8000;
+    uint8_t regs[8];
     bool horizMirroring;
 
-    u8 irqPeriod;
-    u8 irqCounter;
+    uint8_t irqPeriod;
+    uint8_t irqCounter;
     bool irqEnabled;
 
     void apply();
 
   public:
-    Mapper4(u8* rom) : Mapper(rom)
+    Mapper4(uint8_t* rom) : Mapper(rom)
     {
         for (int i = 0; i < 8; i++)
             regs[i] = 0;
@@ -28,8 +28,8 @@ class Mapper4 : public Mapper
         apply();
     }
 
-    u8 write(u16 addr, u8 v);
-    u8 chr_write(u16 addr, u8 v);
+    uint8_t write(uint16_t addr, uint8_t v);
+    uint8_t chr_write(uint16_t addr, uint8_t v);
 
     void signal_scanline();
 };

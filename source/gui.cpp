@@ -24,7 +24,7 @@ SDL_Renderer *renderer;
 SDL_Texture *gameTexture;
 SDL_Texture *background;
 TTF_Font *font;
-u8 const *keys;
+uint8_t const *keys;
 Sound_Queue *soundQueue;
 SDL_Joystick *joystick[] = {nullptr, nullptr};
 
@@ -121,7 +121,8 @@ void init()
     }
 
     printf("Attempting to open joysticks...");
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         joystick[i] = SDL_JoystickOpen(i);
         if (joystick[i] == nullptr)
         {
@@ -129,7 +130,6 @@ void init()
             return;
         }
     }
-
 
     printf("Done.\n");
 
@@ -153,35 +153,20 @@ void init()
                                     SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                     WIDTH, HEIGHT);
 
-    font = TTF_OpenFont("res/font.ttf", FONT_SZ);
-    if(!font) {
-        printf("Failed to open res/font.ttf!");
-        exit(1);
-    }
-    printf("...done");
+    font = TTF_OpenFont("sdmc:/switch/res/font.ttf", FONT_SZ);
+    printf("...done\n");
 
     // keys = SDL_GetKeyboardState(0);
 
-    printf("Setting background...");
-    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
-    {
-        printf("Failed to initialize PNG!");
-        exit(1);
-    }
-
-    SDL_Surface *backSurface = IMG_Load("res/init.png");
+    SDL_Surface *backSurface = IMG_Load("sdmc:/switch/res/init.png");
 
     background = SDL_CreateTextureFromSurface(renderer, backSurface);
 
     SDL_SetTextureColorMod(background, 60, 60, 60);
     SDL_FreeSurface(backSurface);
 
-    if(!background) {
-        printf("Failed to create background!");
-        exit(1);
-    }
-
     // Menus:
+    printf("Initializing Menus...");
     mainMenu = new Menu;
     mainMenu->add(new Entry("Load ROM", [] { menu = fileMenu; }));
     mainMenu->add(new Entry("Settings", [] { menu = settingsMenu; }));
@@ -191,14 +176,15 @@ void init()
     settingsMenu->add(new Entry("<", [] { menu = mainMenu; }));
     // TODO: Add this back and enable substituting the render quality during runtime
     // settingsMenu->add(new Entry("Video",        []{ menu = videoMenu; }));
-    settingsMenu->add(new Entry("Controller 1", []{ menu = joystickMenu[0]; }));
+    settingsMenu->add(new Entry("Controller 1", [] { menu = joystickMenu[0]; }));
 
     // updateVideoMenu();
 
-    settingsMenu->add(new Entry("Controller 2", []{ menu = joystickMenu[1]; }));
+    settingsMenu->add(new Entry("Controller 2", [] { menu = joystickMenu[1]; }));
     settingsMenu->add(new Entry("Save Settings", [] { save_settings(); menu = mainMenu; }));
 
-    for (int i = 0; i < 2; i++) {
+    for (uint8_t i = 0; i < 2; i++)
+    {
         joystickMenu[i] = new Menu;
         joystickMenu[i]->add(new Entry("<", [] { menu = settingsMenu; }));
         joystickMenu[i]->add(new ControlEntry("Up", &BTN_UP[i]));
@@ -214,6 +200,7 @@ void init()
     fileMenu = new FileMenu;
 
     menu = mainMenu;
+    printf("...Done\n");
 }
 
 //* Render a texture on screen */
@@ -245,31 +232,31 @@ SDL_Texture *gen_text(std::string text, SDL_Color color)
 }
 
 /* Get the joypad state from SDL */
-u8 get_joypad_state(int n)
+uint8_t get_joypad_state(int n)
 {
     const int DEAD_ZONE = 8000;
 
-    u8 j = 0;
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_A[n]))      << 0;  // A.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_B[n]))      << 1;  // B.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_SELECT[n])) << 2;  // Select.
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_START[n]))  << 3;  // Start.
+    uint8_t j = 0;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_A[n])) << 0;      // A.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_B[n])) << 1;      // B.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_SELECT[n])) << 2; // Select.
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_START[n])) << 3;  // Start.
 
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_UP[n]))     << 4;  // Up.
-    j |= (SDL_JoystickGetAxis(joystick[n], 1) < -DEAD_ZONE)  << 4;
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_DOWN[n]))   << 5;  // Down.
-    j |= (SDL_JoystickGetAxis(joystick[n], 1) >  DEAD_ZONE)  << 5;
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_LEFT[n]))   << 6;  // Left.
-    j |= (SDL_JoystickGetAxis(joystick[n], 0) < -DEAD_ZONE)  << 6;
-    j |= (SDL_JoystickGetButton(joystick[n], BTN_RIGHT[n]))  << 7;  // Right.
-    j |= (SDL_JoystickGetAxis(joystick[n], 0) >  DEAD_ZONE)  << 7;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_UP[n])) << 4; // Up.
+    j |= (SDL_JoystickGetAxis(joystick[n], 1) < -DEAD_ZONE) << 4;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_DOWN[n])) << 5; // Down.
+    j |= (SDL_JoystickGetAxis(joystick[n], 1) > DEAD_ZONE) << 5;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_LEFT[n])) << 6; // Left.
+    j |= (SDL_JoystickGetAxis(joystick[n], 0) < -DEAD_ZONE) << 6;
+    j |= (SDL_JoystickGetButton(joystick[n], BTN_RIGHT[n])) << 7; // Right.
+    j |= (SDL_JoystickGetAxis(joystick[n], 0) > DEAD_ZONE) << 7;
     return j;
 }
 
 /* Send the rendered frame to the GUI */
-void new_frame(u32 *pixels)
+void new_frame(uint32_t *pixels)
 {
-    SDL_UpdateTexture(gameTexture, NULL, pixels, WIDTH * sizeof(u32));
+    SDL_UpdateTexture(gameTexture, NULL, pixels, WIDTH * sizeof(uint32_t));
 }
 
 void new_samples(const blip_sample_t *samples, size_t count)
@@ -353,12 +340,12 @@ void run()
 {
     SDL_Event e;
     // Framerate control:
-    u32 frameStart, frameTime;
+    uint32_t frameStart, frameTime;
     const int FPS = 60;
     const int DELAY = 20.0f / FPS;
 
     Thread cpuThread;
-    u32 prio = 0;
+    uint32_t prio = 0;
 
     svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
 
@@ -385,14 +372,17 @@ void run()
         {
             threadCreate(&cpuThread, CPU::run_frame, NULL, 0x10000, prio - 1, 1);
             threadStart(&cpuThread);
+            // CPU::run_frame();
         }
 
-        if(not pause) {
+        if (not pause)
+        {
             render();
             threadWaitForExit(&cpuThread);
             threadClose(&cpuThread);
         }
-        else render();
+        else
+            render();
 
         if (exitFlag)
         {

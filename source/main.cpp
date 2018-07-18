@@ -8,7 +8,6 @@ int main(int argc, char *argv[])
 {
     gfxInitDefault();
     consoleInit(NULL);
-    // Initialise sockets
     socketInitializeDefault();
 
     nxlinkStdio();

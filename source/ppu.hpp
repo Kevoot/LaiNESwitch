@@ -10,13 +10,13 @@ enum Mirroring { VERTICAL, HORIZONTAL, ONE_SCREEN_HI, ONE_SCREEN_LO, FOUR_SCREEN
 /* Sprite buffer */
 struct Sprite
 {
-    u8 id;     // Index in OAM.
-    u8 x;      // X position.
-    u8 y;      // Y position.
-    u8 tile;   // Tile index.
-    u8 attr;   // Attributes.
-    u8 dataL;  // Tile data (low).
-    u8 dataH;  // Tile data (high).
+    uint8_t id;     // Index in OAM.
+    uint8_t x;      // X position.
+    uint8_t y;      // Y position.
+    uint8_t tile;   // Tile index.
+    uint8_t attr;   // Attributes.
+    uint8_t dataL;  // Tile data (low).
+    uint8_t dataH;  // Tile data (high).
 };
 
 /* PPUCTRL ($2000) register */
@@ -32,7 +32,7 @@ union Ctrl
         unsigned slave  : 1;  // PPU master/slave.
         unsigned nmi    : 1;  // Enable NMI.
     };
-    u8 r;
+    uint8_t r;
 };
 
 /* PPUMASK ($2001) register */
@@ -49,7 +49,7 @@ union Mask
         unsigned green   : 1;  // Intensify greens.
         unsigned blue    : 1;  // Intensify blues.
     };
-    u8 r;
+    uint8_t r;
 };
 
 /* PPUSTATUS ($2002) register */
@@ -62,7 +62,7 @@ union Status
         unsigned sprHit : 1;  // Sprite 0 Hit.
         unsigned vBlank : 1;  // In VBlank?
     };
-    u8 r;
+    uint8_t r;
 };
 
 /* Loopy's VRAM address */
@@ -84,7 +84,7 @@ union Addr
     unsigned r : 15;
 };
 
-template <bool write> u8 access(u16 index, u8 v = 0);
+template <bool write> uint8_t access(uint16_t index, uint8_t v = 0);
 void set_mirroring(Mirroring mode);
 void step();
 void reset();

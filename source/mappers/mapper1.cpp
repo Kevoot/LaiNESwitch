@@ -43,7 +43,7 @@ void Mapper1::apply()
     }
 }
 
-u8 Mapper1::write(u16 addr, u8 v)
+uint8_t Mapper1::write(uint16_t addr, uint8_t v)
 {
     // PRG RAM write;
     if (addr < 0x8000)
@@ -76,7 +76,7 @@ u8 Mapper1::write(u16 addr, u8 v)
     return v;
 }
 
-u8 Mapper1::chr_write(u16 addr, u8 v)
+uint8_t Mapper1::chr_write(uint16_t addr, uint8_t v)
 {
     return chr[addr] = v;
 }

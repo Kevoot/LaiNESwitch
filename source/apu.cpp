@@ -26,7 +26,7 @@ void reset()
     buf.clear();
 }
 
-template <bool write> u8 access(int elapsed, u16 addr, u8 v)
+template <bool write> uint8_t access(int elapsed, uint16_t addr, uint8_t v)
 {
     if (write)
         apu.write_register(elapsed, addr, v);
@@ -35,19 +35,15 @@ template <bool write> u8 access(int elapsed, u16 addr, u8 v)
 
     return v;
 }
-template u8 access<0>(int, u16, u8); template u8 access<1>(int, u16, u8);
+template uint8_t access<0>(int, uint16_t, uint8_t); template uint8_t access<1>(int, uint16_t, uint8_t);
 
 void run_frame(int elapsed)
 {
     apu.end_frame(elapsed);
     buf.end_frame(elapsed);
 
-    // printf("APU calling GPU::new_samples from run_frame...");
-
     if (buf.samples_avail() >= OUT_SIZE)
         GUI::new_samples(outBuf, buf.read_samples(outBuf, OUT_SIZE));
-
-    // printf("Done.\n");
 }
 
 

@@ -4,13 +4,13 @@
 
 class Mapper3 : public Mapper
 {
-    u8 regs[1];
+    uint8_t regs[1];
     bool vertical_mirroring;
     bool PRG_size_16k;
     void apply();
 
     public:
-    Mapper3(u8* rom) : Mapper(rom)
+    Mapper3(uint8_t* rom) : Mapper(rom)
     {
         PRG_size_16k = rom[4] == 1;
         vertical_mirroring = rom[6] & 0x01;
@@ -18,7 +18,7 @@ class Mapper3 : public Mapper
         apply();
     }
 
-    u8 write(u16 addr, u8 v);
-    u8 chr_write(u16 addr, u8 v);
+    uint8_t write(uint16_t addr, uint8_t v);
+    uint8_t chr_write(uint16_t addr, uint8_t v);
 };
 

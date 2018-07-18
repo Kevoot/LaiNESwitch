@@ -30,7 +30,7 @@ void Mapper3::apply()
     set_mirroring(vertical_mirroring?PPU::VERTICAL:PPU::HORIZONTAL);
 }
 
-u8 Mapper3::write(u16 addr, u8 v)
+uint8_t Mapper3::write(uint16_t addr, uint8_t v)
 {
     /* check for bus contingency? */
 
@@ -43,7 +43,7 @@ u8 Mapper3::write(u16 addr, u8 v)
     return v;
 }
 
-u8 Mapper3::chr_write(u16 addr, u8 v)
+uint8_t Mapper3::chr_write(uint16_t addr, uint8_t v)
 {
     return chr[addr] = v;
 }

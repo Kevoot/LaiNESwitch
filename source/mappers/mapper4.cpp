@@ -40,7 +40,7 @@ void Mapper4::apply()
     set_mirroring(horizMirroring ? PPU::HORIZONTAL : PPU::VERTICAL);
 }
 
-u8 Mapper4::write(u16 addr, u8 v)
+uint8_t Mapper4::write(uint16_t addr, uint8_t v)
 {
     if (addr < 0x8000)
         prgRam[addr - 0x6000] = v;
@@ -61,7 +61,7 @@ u8 Mapper4::write(u16 addr, u8 v)
     return v;
 }
 
-u8 Mapper4::chr_write(u16 addr, u8 v)
+uint8_t Mapper4::chr_write(uint16_t addr, uint8_t v)
 {
     return chr[addr] = v;
 }

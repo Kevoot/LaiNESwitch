@@ -4,16 +4,16 @@
 
 class Mapper7 : public Mapper
 {
-    u8 regs[1];
+    uint8_t regs[1];
     void apply();
 
   public:
-    Mapper7(u8* rom) : Mapper(rom)
+    Mapper7(uint8_t* rom) : Mapper(rom)
     {
         regs[0] = 0;
         apply();
     }
 
-    u8 write(u16 addr, u8 v);
-    u8 chr_write(u16 addr, u8 v);
+    uint8_t write(uint16_t addr, uint8_t v);
+    uint8_t chr_write(uint16_t addr, uint8_t v);
 };
