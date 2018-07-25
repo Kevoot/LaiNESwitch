@@ -28,9 +28,9 @@ namespace GUI {
 /* Loading and saving */
 void load_settings();
 void save_settings();
-const char* get_config_path(char * buf, uint16_t buflen);
+const char* get_config_path(char * buf, int buflen);
 
-extern int8_t last_window_size;
+extern int last_window_size;
 extern SDL_Scancode KEY_A     [];
 extern SDL_Scancode KEY_B     [];
 extern SDL_Scancode KEY_SELECT[];

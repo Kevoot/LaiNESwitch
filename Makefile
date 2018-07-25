@@ -64,19 +64,21 @@ ICON		:= icon.jpg
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=hard -fpic -pie
+ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	-g -Wall -O3 -ffunction-sections -fpermissive -ffast-math -funsafe-math-optimizations `sdl2-config --cflags` `freetype-config --cflags` \
-			$(ARCH) $(DEFINES)
+CFLAGS	:=	-g -Wall -O1 -ffunction-sections -fdata-sections \
+			-ftls-model=local-exec -fpermissive -ffast-math \
+			`sdl2-config --cflags` `freetype-config --cflags` \
+			$(ARCH) $(DEFINES) $(INCLUDE) -D__SWITCH__
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__
-
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++17 -shared -static
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fexceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS := -lSDL2_mixer -lmpg123 -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lpng -ljpeg `sdl2-config --libs` `freetype-config --libs` -specs=$(DEVKITPRO)/libnx/switch.specs -lnx
+LIBS := -lSDL2_mixer -lmpg123 -lSDL2_ttf -lSDL2_gfx -lSDL2_image -lpng -ljpeg \
+		`sdl2-config --libs` `freetype-config --libs` \
+		-specs=$(DEVKITPRO)/libnx/switch.specs -lnx
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing

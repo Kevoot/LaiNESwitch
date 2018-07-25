@@ -19,24 +19,20 @@ namespace Cartridge {
 Mapper* mapper = nullptr;  // Mapper chip.
 
 /* PRG-ROM access */
-template <bool wr> uint8_t access(uint16_t addr, uint8_t v)
+template <bool wr> u8 access(u16 addr, u8 v)
 {
     if (!wr) return mapper->read(addr);
     else     return mapper->write(addr, v);
 }
-
-template uint8_t access<0>(uint16_t, uint8_t); 
-template uint8_t access<1>(uint16_t, uint8_t);
+template u8 access<0>(u16, u8); template u8 access<1>(u16, u8);
 
 /* CHR-ROM/RAM access */
-template <bool wr> uint8_t chr_access(uint16_t addr, uint8_t v)
+template <bool wr> u8 chr_access(u16 addr, u8 v)
 {
     if (!wr) return mapper->chr_read(addr);
     else     return mapper->chr_write(addr, v);
 }
-
-template uint8_t chr_access<0>(uint16_t, uint8_t);
-template uint8_t chr_access<1>(uint16_t, uint8_t);
+template u8 chr_access<0>(u16, u8); template u8 chr_access<1>(u16, u8);
 
 void signal_scanline()
 {
@@ -49,15 +45,17 @@ int load(const char* fileName)
     FILE* f = fopen(fileName, "rb");
 
     if(f == NULL) {
+        printf("FILE open operation failure!\n");
         return -1;
     }
+    printf("FILE operation succeeded!\n");
 
     fseek(f, 0, SEEK_END);
     int size = ftell(f);
 
     fseek(f, 0, SEEK_SET);
 
-    uint8_t* rom = new uint8_t[size];
+    u8* rom = new u8[size];
     fread(rom, size, 1, f);
     fclose(f);
 
@@ -73,9 +71,13 @@ int load(const char* fileName)
         case 7:  mapper = new Mapper7(rom); break;
     }
 
+    printf("Initial Mapping completed, beginning CPU power on\n");
     CPU::power();
+    printf("CPU power on completed, resetting PPU\n");
     PPU::reset();
+    printf("PPU reset, resetting APU\n");
     APU::reset();
+    printf("APU reset complete\n");
 
     return 0;
 }

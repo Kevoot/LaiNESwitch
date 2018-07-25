@@ -10,7 +10,7 @@ namespace GUI
 #define BUF 128
 
 /* Window settings */
-int8_t last_window_size = 1;
+int last_window_size = 1;
 
 /* Controls settings */
 SDL_Scancode KEY_A[] = {SDL_SCANCODE_A, SDL_SCANCODE_ESCAPE};
@@ -75,10 +75,13 @@ void get_config_data()
     SDL_RenderPresent(renderer);
     svcSleepThread(1000000000);
 
+    printf("Opening path %s...", get_path().c_str());
+
     config = fopen(get_path().c_str(), "r");
 
     if (config == NULL)
     {
+        printf("Failure, continuing with default settings\n");
         int newSettings[CONFIG_LINES];
         set_size(1);
         for (int p = 0; p < 2; p++)
@@ -96,7 +99,7 @@ void get_config_data()
         // Screen size
         newSettings[16] = 1;
 
-        // write_settings(newSettings);
+        write_settings(newSettings);
 
         return;
     }
