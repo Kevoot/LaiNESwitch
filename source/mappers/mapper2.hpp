@@ -4,19 +4,19 @@
 
 class Mapper2 : public Mapper
 {
-    u8 regs[1];
+    uint8_t regs[1];
     bool vertical_mirroring;
 
     void apply();
 
   public:
-    Mapper2(u8* rom) : Mapper(rom)
+    Mapper2(uint8_t* rom) : Mapper(rom)
     {
         regs[0] = 0;
         vertical_mirroring = rom[6] & 0x01;
         apply();
     }
 
-    u8 write(u16 addr, u8 v);
-    u8 chr_write(u16 addr, u8 v);
+    uint8_t write(uint16_t addr, uint8_t v);
+    uint8_t chr_write(uint16_t addr, uint8_t v);
 };

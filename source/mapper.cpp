@@ -2,7 +2,7 @@
 #include "mapper.hpp"
 
 
-Mapper::Mapper(u8* rom) : rom(rom)
+Mapper::Mapper(uint8_t* rom) : rom(rom)
 {
     // Read infos from header:
     prgSize      = rom[4] * 0x4000;
@@ -11,7 +11,7 @@ Mapper::Mapper(u8* rom) : rom(rom)
     set_mirroring((rom[6] & 1) ? PPU::VERTICAL : PPU::HORIZONTAL);
 
     this->prg    = rom + 16;
-    this->prgRam = new u8[prgRamSize];
+    this->prgRam = new uint8_t[prgRamSize];
 
     // CHR ROM:
     if (chrSize)
@@ -21,7 +21,7 @@ Mapper::Mapper(u8* rom) : rom(rom)
     {
         chrRam = true;
         chrSize = 0x2000;
-        this->chr = new u8[chrSize];
+        this->chr = new uint8_t[chrSize];
     }
 }
 
@@ -34,7 +34,7 @@ Mapper::~Mapper()
 }
 
 /* Access to memory */
-u8 Mapper::read(u16 addr)
+uint8_t Mapper::read(uint16_t addr)
 {
     if (addr >= 0x8000)
         return prg[prgMap[(addr - 0x8000) / 0x2000] + ((addr - 0x8000) % 0x2000)];
@@ -42,7 +42,7 @@ u8 Mapper::read(u16 addr)
         return prgRam[addr - 0x6000];
 }
 
-u8 Mapper::chr_read(u16 addr)
+uint8_t Mapper::chr_read(uint16_t addr)
 {
     return chr[chrMap[addr / 0x400] + (addr % 0x400)];
 }

@@ -112,7 +112,7 @@ void init()
         return;
     }
 
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
     if (TTF_Init() < 0)
     {
@@ -153,7 +153,7 @@ void init()
                                     SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                     WIDTH, HEIGHT);
 
-    font = TTF_OpenFont("res/font.ttf", FONT_SZ);
+    font = TTF_OpenFont("sdmc:/res/font.ttf", FONT_SZ);
     if(!font) {
         printf("Failed to open res/font.ttf!");
         exit(1);
@@ -169,7 +169,7 @@ void init()
         exit(1);
     }
 
-    SDL_Surface *backSurface = IMG_Load("res/init.png");
+    SDL_Surface *backSurface = IMG_Load("sdmc:/res/init.png");
 
     background = SDL_CreateTextureFromSurface(renderer, backSurface);
 
@@ -180,6 +180,7 @@ void init()
         printf("Failed to create background!");
         exit(1);
     }
+
 
     // Menus:
     mainMenu = new Menu;
@@ -351,16 +352,12 @@ int query_button()
 /* Run the emulator */
 void run()
 {
+    printf("In run()\n");
     SDL_Event e;
     // Framerate control:
     u32 frameStart, frameTime;
     const int FPS = 60;
-    const int DELAY = 20.0f / FPS;
-
-    Thread cpuThread;
-    u32 prio = 0;
-
-    svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
+    const int DELAY = 100.0f / FPS;
 
     while (true)
     {
@@ -381,18 +378,11 @@ void run()
             }
         }
 
-        if (not pause)
-        {
-            threadCreate(&cpuThread, CPU::run_frame, NULL, 0x10000, prio - 1, 1);
-            threadStart(&cpuThread);
+        if(not pause) {
+            CPU::run_frame();
         }
 
-        if(not pause) {
-            render();
-            threadWaitForExit(&cpuThread);
-            threadClose(&cpuThread);
-        }
-        else render();
+        render();
 
         if (exitFlag)
         {

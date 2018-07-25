@@ -19,7 +19,7 @@ void Mapper7::apply()
     set_mirroring((regs[0] & 0x10) ? PPU::ONE_SCREEN_HI : PPU::ONE_SCREEN_LO);
 }
 
-u8 Mapper7::write(u16 addr, u8 v)
+uint8_t Mapper7::write(uint16_t addr, uint8_t v)
 {
     /* check for bus contingency? (addr & 0x8000 == v?) nah */
 
@@ -32,7 +32,7 @@ u8 Mapper7::write(u16 addr, u8 v)
     return v;
 }
 
-u8 Mapper7::chr_write(u16 addr, u8 v)
+uint8_t Mapper7::chr_write(uint16_t addr, uint8_t v)
 {
     return chr[addr] = v;
 }

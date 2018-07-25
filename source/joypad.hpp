@@ -1,11 +1,10 @@
 #pragma once
 #include "common.hpp"
 
-namespace Joypad {
+namespace Joypad
+{
 
-
-u8 read_state(int n);
+uint8_t read_state(int8_t n);
 void write_strobe(bool v);
 
-
-}
+} // namespace Joypad
