@@ -52,7 +52,7 @@ INCLUDES	:=	source \
 				$(EXT_LIBS)
 
 EXEFS_SRC	:=	exefs_src
-ROMFS		:=	game
+#ROMFS		:=	game
 
 APP_TITLE	:= LaiNes
 APP_AUTHOR	:= Kevoot

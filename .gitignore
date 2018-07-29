@@ -1,0 +1,9 @@
+.*/
+build/
+*~
+*.bak
+*.nro
+*.nso
+*.nacp
+*.pfs0
+*.elf

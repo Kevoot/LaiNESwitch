@@ -153,7 +153,7 @@ void init()
                                     SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
                                     WIDTH, HEIGHT);
 
-    font = TTF_OpenFont("sdmc:/res/font.ttf", FONT_SZ);
+    font = TTF_OpenFont("res/font.ttf", FONT_SZ);
     if(!font) {
         printf("Failed to open res/font.ttf!");
         exit(1);
@@ -169,7 +169,7 @@ void init()
         exit(1);
     }
 
-    SDL_Surface *backSurface = IMG_Load("sdmc:/res/init.png");
+    SDL_Surface *backSurface = IMG_Load("res/init.png");
 
     background = SDL_CreateTextureFromSurface(renderer, backSurface);
 
