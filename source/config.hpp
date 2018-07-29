@@ -2,7 +2,7 @@
 #include <sys/stat.h>
 #include <SDL2/SDL.h>
 
-#define CONFIG_FALLBACK ".settings"
+#define CONFIG_FALLBACK "/LaiNes.settings"
 
 #define JOY_A     0
 #define JOY_B     1
